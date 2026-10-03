@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.-">
+        <title> Personal Control Center </title>
+        <link rel="stylesheet" href="styles/main.css">
+    </head>
+
+    <body> 
+        <header>
+            <p> Personal Control Center</p>
+            
+            <nav> 
+                <a href="#home">Главная</a>
+                <a href="#devices">Устройства</a>
+                <a href="#about">О проекте</a>
+            </nav>
+        </header>
+        
+        <main>
+            <section id="home">
+                <h1> Personal Control Centr</h1>
+            </section>
+
+            <section id="devices">
+                <h2>Устройства</h2>
+                <form>
+                    <lable for="device-name">Название устройства</lable>
+                    <input
+                        type="text"
+                        id="device-name"
+                        name="device-name"
+                    >
+                    <lable for="os">Операционная система</lable>
+
+                    <select id="os" name="os">
+                        <option value="">Все</option>
+                        <option value="windows">Windows</option>
+                        <option value="linux">Linux</option>
+                    </select>
+                    <button type="submit">Найти</button>
+                </form>
+
+                <div class="device-grid">
+                    <article class="divice-card">
+                        <h3>Gigabyte G6 MF</h3>
+                        <p>Основной ноутбук</p>
+                        <p>OC: Windows 11</p> 
+                        <p>Процессор: Intel Core i5-13500H</p>
+                        <p>Оперативная память: 16 ГБ</p>
+                        <p>Статус: Online</p>
+                        
+                    </article>
+                </div>
+            </section>
+        </main>
+        
+        <footer> 
+            <p>Personal Control Center, 2026</p>
+        </footer>
+    </body>
