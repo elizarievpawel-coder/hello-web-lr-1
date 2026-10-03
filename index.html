@@ -4,7 +4,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.-">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title> Personal Control Center </title>
         <link rel="stylesheet" href="styles/main.css">
     </head>
@@ -22,19 +22,24 @@
         
         <main>
             <section id="home">
-                <h1> Personal Control Centr</h1>
+                <h1> Personal Control Center</h1>
+
+                <p>
+                    Персональная веб-система длля мониторинга,
+                    управления и автоматизации компьютерных устройств.
+                </p>
             </section>
 
             <section id="devices">
                 <h2>Устройства</h2>
                 <form>
-                    <lable for="device-name">Название устройства</lable>
+                    <label for="device-name">Название устройства</label>
                     <input
                         type="text"
                         id="device-name"
                         name="device-name"
                     >
-                    <lable for="os">Операционная система</lable>
+                    <label for="os">Операционная система</label>
 
                     <select id="os" name="os">
                         <option value="">Все</option>
@@ -45,14 +50,14 @@
                 </form>
 
                 <div class="device-grid">
-                    <article class="divice-card">
+                    <article class="device-card">
                         <h3>Gigabyte G6 MF</h3>
                         <p>Основной ноутбук</p>
                         <p>OC: Windows 11</p> 
                         <p>Процессор: Intel Core i5-13500H</p>
                         <p>Оперативная память: 16 ГБ</p>
                         <p>Статус: Online</p>
-                        
+
                     </article>
                 </div>
             </section>
@@ -62,3 +67,4 @@
             <p>Personal Control Center, 2026</p>
         </footer>
     </body>
+</html>
