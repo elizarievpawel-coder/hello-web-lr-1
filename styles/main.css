@@ -30,3 +30,18 @@ main {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+.device-card {
+    border: 1px solid #d0d0d0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #ffffff;
+    padding: 16px;
+}
+section {
+    margin-block: 40px;
+}
+h1,
+h2,
+h3 {
+    margin-top: 0;
+}
