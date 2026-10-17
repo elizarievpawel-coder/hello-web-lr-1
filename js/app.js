@@ -108,10 +108,10 @@ function getVisibleDevices() {
     let devices = [...state.devices];
 
     if (state.searchQuery !== ``){
-        devices = device.filter((device) => 
+        devices = devices.filter((device) => 
            device.name
-                .toLoweerCase()
-                .includes(state.searchQery.toLowerCase())
+                .toLowerCase()
+                .includes(state.searchQuery.toLowerCase())
         );
     }
 
@@ -141,9 +141,9 @@ function getVisibleDevices() {
 function render() {
     deviceList.replaceChildren();
 
-    const getVisibleDevices = getVisibleDevices();
+    const visibleDevices = getVisibleDevices();
 
-    state.devices.forEach((device) => {
+    visibleDevices.forEach((device) => {
         const article = document.createElement(`article`);
         article.className = `device-card`;
         
