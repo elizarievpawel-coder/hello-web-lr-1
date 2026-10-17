@@ -33,19 +33,23 @@
             <section id="devices">
                 <h2>Устройства</h2>
                 <form>
-                    <label for="device-name">Название устройства</label>
-                    <input
-                        type="text"
-                        id="device-name"
-                        name="device-name"
-                    >
-                    <label for="os">Операционная система</label>
+                    <div class="form-group">
+                        <lable for="device-name">Название устройства</lable>
+                        <input 
+                            type="text"
+                            id="device-name"
+                            name="device-name"
+                        >
+                    </div>
 
-                    <select id="os" name="os">
-                        <option value="">Все</option>
-                        <option value="windows">Windows</option>
-                        <option value="linux">Linux</option>
-                    </select>
+                    <div class="form-group"
+                        <label for="os">Операционная система</label>
+                        <select id="os" name="os">
+                            <option value="">Все</option>
+                            <options value="windows"></options>
+                            <options value="linux">Linux</options>
+                        </select>
+                    </div>
                     <button type="submit">Найти</button>
                 </form>
 
