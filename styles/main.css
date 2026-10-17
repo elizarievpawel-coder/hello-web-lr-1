@@ -85,3 +85,18 @@ button {
     background: #222222;
     color: #ffffff;
 }
+nav a:hover {
+    text-decoration: underline;
+}
+
+button:hover {
+    bacground: #444444;
+}
+
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: 3px solid #4d90fe;
+    outline-offset: 2px;
+}
