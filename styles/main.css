@@ -90,7 +90,7 @@ nav a:hover {
 }
 
 button:hover {
-    bacground: #444444;
+    background: #444444;
 }
 
 a:focus-visible,
@@ -99,4 +99,13 @@ select:focus-visible,
 button:focus-visible {
     outline: 3px solid #4d90fe;
     outline-offset: 2px;
+}
+footer {
+    padding: 20px 24px;
+    border-top: 1px solid #d0d0d0;
+    text-align: center;
+}
+
+footer p {
+    margin: 0;
 }
