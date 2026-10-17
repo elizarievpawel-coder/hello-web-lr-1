@@ -107,18 +107,18 @@ function createParagraph(text) {
 function getVisibleDevices() {
     let devices = [...state.devices];
 
-    if (state.searchQery !== ``){
-        device = device.filter((device) => 
+    if (state.searchQuery !== ``){
+        devices = device.filter((device) => 
            device.name
                 .toLoweerCase()
                 .includes(state.searchQery.toLowerCase())
         );
     }
 
-    if (state.selectedOS != `all`) {
-        device = device.filter((device) =>
+    if (state.selectedOS !== `all`) {
+        devices = devices.filter((device) =>
                 device.os
-                    .toLoweerCase()
+                    .toLowerCase()
                     .includes(state.selectedOS)
         );
     }
@@ -135,11 +135,13 @@ function getVisibleDevices() {
         );
     }
 
-    return device;
+    return devices;
 }
 
 function render() {
     deviceList.replaceChildren();
+
+    const getVisibleDevices = getVisibleDevices();
 
     state.devices.forEach((device) => {
         const article = document.createElement(`article`);
@@ -175,7 +177,7 @@ function render() {
         state.searchQuery = event.target.value;
         render();
     });
-    
+
     osSelect.addEventListener(`change`, (event) => {
         state.selectedOS = event.target.value;
         render();
