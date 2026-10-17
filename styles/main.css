@@ -52,7 +52,7 @@ header {
     padding: 16px 24px;
     border-bottom: 1px solid #d0d0d0;
 }
-nav a {
+nav {
     display: flex;
     gap: 20px;
 }
