@@ -85,11 +85,16 @@ const defaultDevices = [
 ];
 const state = {
     devices: [...defaultDevices],
-    serchQuery: ``,
+    searchQuery: ``,
     selectedOS: `all`,
     sortBy: `name-asc`
 };
+
 const deviceList = document.querySelector(`#device-list`);
+const searchInput = document.querySelector(`#device-name`);
+const osSelect = document.querySelector(`#os`);
+const sortSelect = document.querySelector(`#sort`);
+const searchForm = document.querySelector(`form`);
 
 function createParagraph(text) {
     const paragraph = document.createElement(`p`);
@@ -97,6 +102,40 @@ function createParagraph(text) {
 
     return paragraph;
 
+}
+
+function getVisibleDevices() {
+    let devices = [...state.devices];
+
+    if (state.searchQery !== ``){
+        device = device.filter((device) => 
+           device.name
+                .toLoweerCase()
+                .includes(state.searchQery.toLowerCase())
+        );
+    }
+
+    if (state.selectedOS != `all`) {
+        device = device.filter((device) =>
+                device.os
+                    .toLoweerCase()
+                    .includes(state.selectedOS)
+        );
+    }
+
+    if (state.sortBy === `name-asc`) {
+        devices.sort((a, b) =>
+            a.name.localeCompare(b.name)
+        );
+    }
+        
+    if (state.sortBy === `name-desc`) {
+        devices.sort((a, b) =>
+            b.name.localeCompare(a.name)
+        );
+    }
+
+    return device;
 }
 
 function render() {
@@ -110,7 +149,7 @@ function render() {
         image.src = device.image;
         image.alt = device.alt;
         
-        const title = document.createElement(`h3`)
+        const title = document.createElement(`h3`);
         title.textContent = device.name;
     
         const description = createParagraph(device.description);
@@ -130,6 +169,24 @@ function render() {
         
         deviceList.append(article);
         });
-        
     }
+
+    searchInput.addEventListener(`input`, (event) => {
+        state.searchQuery = event.target.value;
+        render();
+    });
+    
+    osSelect.addEventListener(`change`, (event) => {
+        state.selectedOS = event.target.value;
+        render();
+    });
+
+    sortSelect.addEventListener(`change`, (event) => {
+        state.sortBy = event.target.value;
+        render();
+    });
+
+    searchForm.addEventListener(`submit`, (event) => {
+        event.preventDefault();
+    });
 render();

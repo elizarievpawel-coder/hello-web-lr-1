@@ -46,11 +46,20 @@
                     <div class="form-group">
                         <label for="os">Операционная система</label>
                         <select id="os" name="os">
-                            <option value="">Все</option>
+                            <option value="all">Все</option>
                             <option value="windows">Windows</option>
                             <option value="linux">Linux</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label for="sort">Сортировка</label>
+
+                        <select id="sort" name="sort">
+                            <option value="name-asc">Название А-Я</option>
+                            <option value="name-desc">Название Я-А</option>
+                        </select>
+                    </div>
+                    
                     <button type="submit">Найти</button>
                 </form>
 
