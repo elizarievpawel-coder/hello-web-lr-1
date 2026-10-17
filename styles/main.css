@@ -44,6 +44,7 @@ main {
     overflow: hidden;
     background: #ffffff;
     padding: 16px;
+    transition: border-color 0.2s;
 }
 section {
     margin-block: 40px;
@@ -61,10 +62,6 @@ header {
     padding: 16px 24px;
     border-bottom: 1px solid #d0d0d0;
     background: #ffffff;
-}
-nav {
-    display: flex;
-    gap: 20px;
 }
 nav a {
     color: #222222;
@@ -122,7 +119,7 @@ footer p {
 }
 nav {
     display: flex;
-    flex-wrap: warp;
+    flex-wrap: wrap;
     gap: 20px;
 }
 input,
@@ -139,4 +136,17 @@ select {
 }
 .device-card:hover {
     border-color: #999999;
+}
+header > p {
+    margin: 0;
+    font-weight: bold;
+}
+
+label{
+    font-weight: bold;
+}
+
+#home p,
+#about p {
+    line-height: 1.6;
 }
