@@ -4,6 +4,8 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    color: #222222;
 }
 main {
     width: min(100% - 32px, 1200px);
@@ -51,6 +53,7 @@ header {
     align-items: center;
     padding: 16px 24px;
     border-bottom: 1px solid #d0d0d0;
+    background: #ffffff
 }
 nav {
     display: flex;
@@ -109,3 +112,4 @@ footer {
 footer p {
     margin: 0;
 }
+
