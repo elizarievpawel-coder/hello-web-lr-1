@@ -26,6 +26,12 @@ main {
     .device-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
 }
 @media (min-width: 1100px) {
     .device-grid {
@@ -49,11 +55,12 @@ h3 {
 }
 header {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
     padding: 16px 24px;
     border-bottom: 1px solid #d0d0d0;
-    background: #ffffff
+    background: #ffffff;
 }
 nav {
     display: flex;
@@ -74,6 +81,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    flex: 1 1 220px;
 }
 input,
 select,
@@ -112,4 +120,23 @@ footer {
 footer p {
     margin: 0;
 }
+nav {
+    display: flex;
+    flex-wrap: warp;
+    gap: 20px;
+}
+input,
+select {
+    width: 100%;
+}
+.device-card h3 {
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
 
+.device-card p {
+    margin-block: 8px;
+}
+.device-card:hover {
+    border-color: #999999;
+}
