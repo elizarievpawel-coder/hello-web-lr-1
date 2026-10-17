@@ -84,7 +84,7 @@ const defaultDevices = [
     }
 ];
 const state = {
-    device: [...defaultDevices],
+    devices: [...defaultDevices],
     serchQuery: ``,
     selectedOS: `all`,
     sortBy: `name-asc`
@@ -102,7 +102,7 @@ function createParagraph(text) {
 function render() {
     deviceList.replaceChildren();
 
-    state.device.forEach((device) => {
+    state.devices.forEach((device) => {
         const article = document.createElement(`article`);
         article.className = `device-card`;
         
@@ -110,11 +110,11 @@ function render() {
         image.src = device.image;
         image.alt = device.alt;
         
-        const title = document.createElement(`img`)
+        const title = document.createElement(`h3`)
         title.textContent = device.name;
     
         const description = createParagraph(device.description);
-        const os = createParagraph(`OC: ${device.os}`);
+        const os = createParagraph(`ОС: ${device.os}`);
         
         article.append(
                 image,
@@ -132,4 +132,4 @@ function render() {
         });
         
     }
-render()
+render();
