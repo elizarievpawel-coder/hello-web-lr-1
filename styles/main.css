@@ -25,7 +25,7 @@ main {
 
 .device-card {
     border: 1px solid #d0d0d0;
-    border-radius: 12px;
+    border-radius: 0px;
     overflow: hidden;
     background: #ffffff;
     padding: 16px;
