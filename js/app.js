@@ -246,6 +246,8 @@ function render() {
                 device.id !== deviceId
             );
 
+            saveDevices();
+
             render();
         });
 
@@ -319,6 +321,8 @@ function render() {
 
         state.devices.push(newDevice);
 
+        saveDevices();
+        
         render();
 
         addDeviceForm.reset();
