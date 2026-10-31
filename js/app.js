@@ -99,7 +99,7 @@ const deviceModal = document.querySelector(`#device-modal`);
 const openModalButton = document.querySelector(`#open-device-modal`);
 const closeModalButton = document.querySelector('#close-device-modal');
 const cancelModalButton = document.querySelector(`#cancel-device-modal`);
-const addeviceForm = document.querySelector(`#add-device-form`);
+const addDeviceForm = document.querySelector(`#add-device-form`);
 const nameInput = document.querySelector(`#new-device-name`);
 const osInput = document.querySelector(`#new-device-os`);
 const descriptionInput = document.querySelector(`#new-device-description`);
@@ -232,11 +232,11 @@ function render() {
         if (validity.valueMissing) {
             errorMessage = `Это поле обяъательное для заполнения`;
         } else if (validity.tooShort) {
-            errorMessage = `Минимальная длина - $(input.minLenght) символа`;
+            errorMessage = `Минимальная длина - ${input.minLenght} символа`;
         } else if (validity.tooLong) {
-            errorMessage = `Максимальная длина - $(input.maxLenght) символа`;
+            errorMessage = `Максимальная длина - ${input.maxLenght} символа`;
         } else if (validity.rangeUnderflow) {
-            errorMessage = `Минимальное значение - $(input.min)`;
+            errorMessage = `Минимальное значение - ${input.min}`;
         } else if (validity.rangeOverflow) {
             errorMessage = `Максимальное значение - ${input.max}`;
         }
@@ -246,10 +246,10 @@ function render() {
         return validity.valid;
     }
 
-    addeviceForm.addEventListener(`submit`, (event) => {
+    addDeviceForm.addEventListener(`submit`, (event) => {
         event.preventDefault();
 
-        const isNameValid = validateFailed(nameInput, nameError);
+        const isNameValid = validateField(nameInput, nameError);
         const isOsValid = validateField(osInput, osError);
         const isDescriptionValid = validateField(descriptionInput, descriptionError);
         const isRamValid = validateField(ramInput, ramError);
