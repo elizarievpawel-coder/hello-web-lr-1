@@ -31,255 +31,155 @@
                 </p>
             </section>
 
-            <section id="devices">
-                <h2>Устройства</h2>
+            
+<section id="devices">
+    <h2>Устройства</h2>
 
-                <div class="device-grid" id ="device-list">
-                </div>
+    <!-- Форма поиска и фильтрации -->
+    <form id="filter-form">
+        <div class="form-group">
+            <label for="device-name">Название устройства</label>
+            <input
+                type="text"
+                id="device-name"
+                name="device-name"
+            >
+        </div>
 
-                <dialog id="device-modal">
-                    <div class="modal-content">
+        <div class="form-group">
+            <label for="os">Операционная система</label>
+            <select id="os" name="os">
+                <option value="all">Все</option>
+                <option value="windows">Windows</option>
+                <option value="linux">Linux</option>
+            </select>
+        </div>
 
-                        <div class="modal-header">
-                            <h2>Добавить устройство</h2>
+        <div class="form-group">
+            <label for="sort">Сортировка</label>
+            <select id="sort" name="sort">
+                <option value="name-asc">Название А-Я</option>
+                <option value="name-desc">Название Я-А</option>
+            </select>
+        </div>
 
-                            <button
-                                type="button"
-                                id="close-device-modal"
-                                aria-label="Закрыть окно"
-                            >
-                                +
-                            </button>
-                        </div>
+        <button type="submit">Найти</button>
+    </form>
 
-                        <form id="add-device-form" novalidate>
+    <button type="button" id="open-device-modal">
+        Добавить устройство
+    </button>
 
-                            <div class="form-group">
-                                <label for="new-device-name">Название</label>
+    <!-- Контейнер карточек -->
+    <div class="device-grid" id="device-list"></div>
 
-                                <input
-                                    type="text"
-                                    id="new-device-name"
-                                    name="name"
-                                    required
-                                    minlength="2"
-                                >
+    <!-- Модальное окно -->
+    <dialog id="device-modal" aria-labelledby="modal-title">
+        <div class="modal-content">
 
-                                <small
-                                    class="error-mesage"
-                                    id="name-error"
-                                ></small>
-                            </div>
+            <div class="modal-header">
+                <h2 id="modal-title">Добавить устройство</h2>
 
-                            <div class="form-group">
-                                <label for="new-device-os">Операционная система</label>
-
-                                <select
-                                    id="new-device-os"
-                                    name="os"
-                                    required
-                                >
-                                    <option value="">Выберите ОС</option>
-                                    <option value="Windows">Windows</option>
-                                    <option value="Linux">Linux</option>
-                                </select>
-
-                                <small
-                                    class="error-mesage"
-                                    id="os-error"
-                                ></small>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="new-device-description">Описание</label>
-
-                <input
-                    type="text"
-                    id="new-device-description"
-                    name="description"
-                    required
-                    minlength="3"
-                >
-
-                <small
-                    class="error-message"
-                    id="description-error"
-                ></small>
-            </div>
-
-            <div class="form-group">
-                <label for="new-device-ram">Оперативная память, ГБ</label>
-
-                <input
-                    type="number"
-                    id="new-device-ram"
-                    name="ram"
-                    required
-                    min="1"
-                    max="512"
-                >
-
-                <small
-                    class="error-message"
-                    id="ram-error"
-                ></small>
-            </div>
-
-            <div class="form-group">
-                <label for="new-device-status">Статус</label>
-
-                <select
-                    id="new-device-status"
-                    name="status"
-                    required
-                >
-                    <option value="Offline">Offline</option>
-                    <option value="Online">Online</option>
-                </select>
-            </div>
-
-            <div class="modal-actions">
                 <button
                     type="button"
-                    id="cancel-device-modal"
+                    id="close-device-modal"
+                    aria-label="Закрыть окно"
                 >
-                    Отмена
-                </button>
-
-                <button type="submit">
-                    Добавить
+                    ×
                 </button>
             </div>
 
-        </form>
-    </div>
-</dialog>
-                        </form>
-                    </div>
-                </dialog>
-                <button type="button" id="open-device-model">
-                    Добавить устройство
-                </button>
+            <form id="add-device-form" novalidate>
 
-                <form id="filter-form">
-                    <div class="form-group">
-                        <label for="device-name">Название устройства</label>
-                        <input 
-                            type="text"
-                            id="device-name"
-                            name="device-name"
-                        >
-                        <div class="modal" id="device-modal" aria-hiden="true" hiden>
-                            <section
-                                class="modal-dialog"
-                                role="dialog"
-                                aria-modal="true"
-                                aria-labelledby="modal-title"
-                            >
-                                <div class="modal-header">
-                                    <h2 id="modal-title">Добавить устройство</h2>
-
-                                    <button
-                                        type="button"
-                                        id="close-modal"
-                                        aria-label="Закрыть окно"
-                                    >
-                                        *
-                                </button>
-                                </div>
-
-                                <form id="device-form" novalidate
-                                    <div class="form-group">
-                                        <label for="new-device-name">Название кстройства</label>
-                                        <input
-                                            type="text"
-                                            id="new-device-name"
-                                            name="name"
-                                            required
-                                            minlenght="2"
-                                            maxlenght="50"
-                                            aria-describedby="new-device-name-error"
-                                        >
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="new-device-description">Описание</label>
-                                        <input
-                                            type="text"
-                                            id="new-device-description"
-                                            name="description"
-                                            required
-                                            minlenght="3"
-                                            maxlenght="120"
-                                            aria-describedby="new-device-description-error"
-                                        >
-                                        <small class="field-error" id="new-device-description-error"></small>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="new-device-os">Операционная система</label>
-                                        <input
-                                            type="text"
-                                            id="new-device-os"
-                                            name="os"
-                                            required
-                                            minlength="2"
-                                            maxlength="50"
-                                            aria-describedby="new-device-os-error"
-                                        >
-                                        <small class="field-error" id="new-device-os-error"></small>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="new-device-details">
-                                            Характеристики (каждая с новой строки)
-                                        </label>
-                                        <textarea
-                                            id="new-device-details"
-                                            name="details"
-                                            rows="4"
-                                            placeholder="Процессор: Intel Core i5&#10;Оперативная память: 16 ГБ"
-                                        ></textarea>
-                                    </div>
-
-                                     <div class="form-group">
-                                        <label for="new-device-status">Статус устройства</label>
-                                        <select id="new-device-status" name="status" required>
-                                            <option value="Online">Online</option>
-                                            <option value="Offline" selected>Offline</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="modal-actions">
-                                        <button type="button" id="cancel-modal">Отмена</button>
-                                        <button type="submit">Добавить</button>
-                                    </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="os">Операционная система</label>
-                        <select id="os" name="os">
-                            <option value="all">Все</option>
-                            <option value="windows">Windows</option>
-                            <option value="linux">Linux</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="sort">Сортировка</label>
-
-                        <select id="sort" name="sort">
-                            <option value="name-asc">Название А-Я</option>
-                            <option value="name-desc">Название Я-А</option>
-                        </select>
-                    </div>
-
-                    <button type="submit">Найти</button>
-                </form id="filter-form">
-
-                <div class="device-grid" id="device-list">
+                <div class="form-group">
+                    <label for="new-device-name">Название устройства</label>
+                    <input
+                        type="text"
+                        id="new-device-name"
+                        name="name"
+                        required
+                        minlength="2"
+                        maxlength="50"
+                        aria-describedby="name-error"
+                    >
+                    <small class="field-error" id="name-error"></small>
                 </div>
-            </section>
+
+                <div class="form-group">
+                    <label for="new-device-os">Операционная система</label>
+                    <input
+                        type="text"
+                        id="new-device-os"
+                        name="os"
+                        required
+                        minlength="2"
+                        maxlength="50"
+                        aria-describedby="os-error"
+                    >
+                    <small class="field-error" id="os-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-device-description">Описание</label>
+                    <input
+                        type="text"
+                        id="new-device-description"
+                        name="description"
+                        required
+                        minlength="3"
+                        maxlength="120"
+                        aria-describedby="description-error"
+                    >
+                    <small class="field-error" id="description-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-device-ram">Оперативная память, ГБ</label>
+                    <input
+                        type="number"
+                        id="new-device-ram"
+                        name="ram"
+                        required
+                        min="1"
+                        max="512"
+                        aria-describedby="ram-error"
+                    >
+                    <small class="field-error" id="ram-error"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-device-details">Дополнительные характеристики</label>
+                    <textarea
+                        id="new-device-details"
+                        name="details"
+                        rows="4"
+                        placeholder="Процессор: Intel Core i5"
+                    ></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="new-device-status">Статус устройства</label>
+                    <select id="new-device-status" name="status" required>
+                        <option value="Offline">Offline</option>
+                        <option value="Online">Online</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" id="cancel-device-modal">
+                        Отмена
+                    </button>
+
+                    <button type="submit">
+                        Добавить
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </dialog>
+</section>
+
 
             <section id="about">
                 <h2>О проекте</h2>
