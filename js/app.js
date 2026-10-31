@@ -83,12 +83,30 @@ const defaultDevices = [
         alt: `Test Node`
     }
 ];
+
+let initialDevices;
+
+try {
+    const savedDevices = localStorage.getItem(`devices`);
+    const parsedDevices = savedDevices ? JSON.parse(savedDevices) : null;
+
+    initialDevices = Array.isArray(parsedDevices)
+        ? parsedDevices
+        : defaultDevices;
+} catch {
+    initialDevices = defaultDevices;
+}
+
 const state = {
-    devices: [...defaultDevices],
+    devices: [...initialDevices],
     searchQuery: ``,
     selectedOS: `all`,
     sortBy: `name-asc`
 };
+
+function saveDevices() {
+    localStorage.setItem(`devices`, JSON.stringify(state.devices));
+}
 
 const deviceList = document.querySelector(`#device-list`);
 const searchInput = document.querySelector(`#device-name`);
@@ -215,6 +233,22 @@ function render() {
         event.preventDefault();
     });
 
+    deviceList.addEventListener(`click`, (event) => {
+            const deleteButton = event.target.closest(`.delete-device`);
+
+            if (!deleteButton) {
+                return;
+            }
+
+            const deviceId = Number(deleteButton.dataset.id);
+
+            state.devices = state.devices.filter((device) =>
+                device.id !== deviceId
+            );
+
+            render();
+        });
+
     openModalButton.addEventListener(`click`, () => {
         deviceModal.showModal();
     });
@@ -282,22 +316,6 @@ function render() {
             image: `assets/images/tn.jpg`,
             alt: `Изображение устройства ${nameInput.value.trim()}`
         };
-
-        deviceList.addEventListener(`click`, (event) => {
-            const deleteButton = event.target.closest(`.delete-device`);
-
-            if (!deleteButton) {
-                return;
-            }
-
-            const deviceId = Number(deleteButton.dataset.id);
-
-            state.devices = state.devices.filter((device) =>
-                device.id !== deviceId
-            );
-
-            render();
-        });
 
         state.devices.push(newDevice);
 
