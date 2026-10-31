@@ -95,6 +95,9 @@ const searchInput = document.querySelector(`#device-name`);
 const osSelect = document.querySelector(`#os`);
 const sortSelect = document.querySelector(`#sort`);
 const searchForm = document.querySelector(`#filter-form`);
+const deviceModal = document.querySelector(`#device-modal`);
+const openModalButton = document.querySelector(`#open-device-modal`);
+const closeModalButton = document.querySelector('#cancel-device-modal');
 
 function createParagraph(text) {
     const paragraph = document.createElement(`p`);
@@ -190,5 +193,23 @@ function render() {
 
     searchForm.addEventListener(`submit`, (event) => {
         event.preventDefault();
+    });
+
+    openModalButton.addEventListener(`click`, () => {
+        deviceModal.showModal();
+    });
+
+    closeModalButton.addEventListener(`click`, () => {
+        deviceModal.close();
+    });
+
+    cancelModalButton.addEventListener(`click`, () => {
+        deviceModal.close();
+    });
+
+    deviceModal.addEventListener(`click`, (event) => {
+        if (event.target === deviceModal) {
+            deviceModal.close();
+        }
     });
 render();
