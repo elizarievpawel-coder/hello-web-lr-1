@@ -183,6 +183,14 @@ function render() {
         });
         const status = createParagraph(`Статус: ${device.status}`);
         article.append(status);
+
+        const deleteButton = document.createElement(`button`);
+        deleteButton.type = `button`;
+        deleteButton.className = `delete-device`;
+        deleteButton.dataset.id = device.id;
+        deleteButton.textContent = `Удалить`;
+
+        article.append(deleteButton);
         
         deviceList.append(article);
         });
@@ -274,6 +282,22 @@ function render() {
             image: `assets/images/tn.jpg`,
             alt: `Изображение устройства ${nameInput.value.trim()}`
         };
+
+        deviceList.addEventListener(`click`, (event) => {
+            const deleteButton = event.target.closest(`.delete-device`);
+
+            if (!deleteButton) {
+                return;
+            }
+
+            const deviceId = Number(deleteButton.dataset.id);
+
+            state.devices = state.devices.filter((device) =>
+                device.id !== deviceId
+            );
+
+            render();
+        });
 
         state.devices.push(newDevice);
 
