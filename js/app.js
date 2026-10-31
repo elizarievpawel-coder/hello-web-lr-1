@@ -99,16 +99,16 @@ const deviceModal = document.querySelector(`#device-modal`);
 const openModalButton = document.querySelector(`#open-device-modal`);
 const closeModalButton = document.querySelector('#close-device-modal');
 const cancelModalButton = document.querySelector(`#cancel-device-modal`);
-const adddeviceForm = document.querySelector(`#add-device-form`);
+const addeviceForm = document.querySelector(`#add-device-form`);
 const nameInput = document.querySelector(`#new-device-name`);
 const osInput = document.querySelector(`#new-device-os`);
 const descriptionInput = document.querySelector(`#new-device-description`);
 const ramInput = document.querySelector(`#new-device-ram`);
 const detailsInput = document.querySelector(`#new-device-details`);
-const statusSelect = document.querySelector(`#new-device-stastus`);
+const statusSelect = document.querySelector(`#new-device-status`);
 const nameError = document.querySelector(`#name-error`);
 const osError = document.querySelector(`#os-error`);
-const descriptionerror = document.querySelector(`#description-error`);
+const descriptionError = document.querySelector(`#description-error`);
 const ramError = document.querySelector(`#ram-error`); 
 
 function createParagraph(text) {
@@ -225,7 +225,7 @@ function render() {
         }
     });
 
-    function validateFailed(input, errorElement) {
+    function validateField(input, errorElement) {
         const validity = input.validity;
         let errorMessage = ``;
 
@@ -246,7 +246,7 @@ function render() {
         return validity.valid;
     }
 
-    adddeviceForm.addEventListener(`submit`, (event) => {
+    addeviceForm.addEventListener(`submit`, (event) => {
         event.preventDefault();
 
         const isNameValid = validateFailed(nameInput, nameError);
