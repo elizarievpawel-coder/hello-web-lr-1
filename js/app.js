@@ -94,7 +94,7 @@ const deviceList = document.querySelector(`#device-list`);
 const searchInput = document.querySelector(`#device-name`);
 const osSelect = document.querySelector(`#os`);
 const sortSelect = document.querySelector(`#sort`);
-const searchForm = document.querySelector(`form`);
+const searchForm = document.querySelector(`#filter-form`);
 
 function createParagraph(text) {
     const paragraph = document.createElement(`p`);
@@ -107,7 +107,7 @@ function createParagraph(text) {
 function getVisibleDevices() {
     let devices = [...state.devices];
 
-    if (state.searchQuery !== ``){
+    if (state.searchQuery !== ``) {
         devices = devices.filter((device) => 
            device.name
                 .toLowerCase()

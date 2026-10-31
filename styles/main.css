@@ -52,7 +52,7 @@ nav a {
     color: #222222;
     text-decoration: none;
 }
-form {
+#filter-form {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
@@ -154,4 +154,48 @@ label{
     .device-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+dialog {
+    width: min(100% - 32px, 500px);
+    border: none;
+    border-radius: 5px;
+    padding: 0;
+}
+
+dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    padding: 24px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin 0;
+}
+
+#add-device-form {
+    display: grid;
+    gap: 16px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.error-mesage {
+    min-height: 18px;
+    color: #b00020;
+    font-size: 14px;
 }
