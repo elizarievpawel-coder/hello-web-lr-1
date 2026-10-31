@@ -97,7 +97,19 @@ const sortSelect = document.querySelector(`#sort`);
 const searchForm = document.querySelector(`#filter-form`);
 const deviceModal = document.querySelector(`#device-modal`);
 const openModalButton = document.querySelector(`#open-device-modal`);
-const closeModalButton = document.querySelector('#cancel-device-modal');
+const closeModalButton = document.querySelector('#close-device-modal');
+const cancelModalButton = document.querySelector(`#cancel-device-modal`);
+const adddeviceForm = document.querySelector(`#add-device-form`);
+const nameInput = document.querySelector(`#new-device-name`);
+const osInput = document.querySelector(`#new-device-os`);
+const descriptionInput = document.querySelector(`#new-device-description`);
+const ramInput = document.querySelector(`#new-device-ram`);
+const detailsInput = document.querySelector(`#new-device-details`);
+const statusSelect = document.querySelector(`#new-device-stastus`);
+const nameError = document.querySelector(`#name-error`);
+const osError = document.querySelector(`#os-error`);
+const descriptionerror = document.querySelector(`#description-error`);
+const ramError = document.querySelector(`#ram-error`); 
 
 function createParagraph(text) {
     const paragraph = document.createElement(`p`);
@@ -212,4 +224,40 @@ function render() {
             deviceModal.close();
         }
     });
+
+    function validateFailed(input, errorElement) {
+        const validity = input.validity;
+        let errorMessage = ``;
+
+        if (validity.valueMissing) {
+            errorMessage = `Это поле обяъательное для заполнения`;
+        } else if (validity.tooShort) {
+            errorMessage = `Минимальная длина - $(input.minLenght) символа`;
+        } else if (validity.tooLong) {
+            errorMessage = `Максимальная длина - $(input.maxLenght) символа`;
+        } else if (validity.rangeUnderflow) {
+            errorMessage = `Минимальное значение - $(input.min)`;
+        } else if (validity.rangeOverflow) {
+            errorMessage = `Максимальное значение - ${input.max}`;
+        }
+
+        errorElement.textContent = errorMessage;
+
+        return validity.valid;
+    }
+
+    adddeviceForm.addEventListener(`submit`, (event) => {
+        event.preventDefault();
+
+        const isNameValid = validateFailed(nameInput, nameError);
+        const isOsValid = validateField(osInput, osError);
+        const isDescriptionValid = validateField(descriptionInput, descriptionError);
+        const isRamValid = validateField(ramInput, ramError);
+
+        if (!isNameValid || !isOsValid || !isDescriptionValid || !isRamValid) {
+            return;
+        }
+
+        console.log(`Все поля заполнены корректно`)
+    }); 
 render();
