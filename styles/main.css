@@ -167,101 +167,6 @@ dialog {
 dialog::backdrop {
     background: rgb(0 0 0 / 50%);
 }
-
-.modal-content {
-    padding: 24px;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.modal-header h2 {
-    margin: 0;
-}
-
-#add-device-form {
-    display: grid;
-    gap: 16px;
-}
-
-#add-device-form .form-group {
-    width: 100%;
-}
-
-#add-device-form textarea {
-    width: 100%;
-    font: inherit;
-    padding: 10px 12px;
-    border: 1px solid #bdbdbd;
-    border-radius: 8px;
-    resize: vertical;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-}
-
-.field-error {
-    display: block;
-    min-height: 18px;
-    color: #b00020;
-    font-size: 14px;
-}
-
-.modal-content {
-    padding: 24px;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-}
-
-.modal-header h2 {
-    margin: 0;
-}
-
-#add-device-form {
-    display: grid;
-    gap: 16px;
-}
-
-#add-device-form .form-group {
-    width: 100%;
-}
-
-#add-device-form textarea {
-    width: 100%;
-    font: inherit;
-    padding: 10px 12px;
-    border: 1px solid #bdbdbd;
-    border-radius: 8px;
-    resize: vertical;
-}
-
-.modal-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-}
-
-.field-error {
-    display: block;
-    min-height: 18px;
-    color: #b00020;
-    font-size: 14px;
-}
-
 .modal-content {
     padding: 24px;
 }
@@ -293,4 +198,14 @@ dialog::backdrop {
     min-height: 18px;
     color: #b00020;
     font-size: 14px;
+}
+
+.delete-device {
+    margin-top: 12px;
+    background: #8f1d1d;
+    border-color: #8f1d1d;
+}
+
+.delete-device:hover {
+    background: #b3261e;
 }
