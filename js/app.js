@@ -230,11 +230,11 @@ function render() {
         let errorMessage = ``;
 
         if (validity.valueMissing) {
-            errorMessage = `Это поле обяъательное для заполнения`;
+            errorMessage = `Это поле обязательное для заполнения`;
         } else if (validity.tooShort) {
-            errorMessage = `Минимальная длина - ${input.minLenght} символа`;
+            errorMessage = `Минимальная длина - ${input.minLength} символа`;
         } else if (validity.tooLong) {
-            errorMessage = `Максимальная длина - ${input.maxLenght} символа`;
+            errorMessage = `Максимальная длина - ${input.maxLength} символа`;
         } else if (validity.rangeUnderflow) {
             errorMessage = `Минимальное значение - ${input.min}`;
         } else if (validity.rangeOverflow) {
