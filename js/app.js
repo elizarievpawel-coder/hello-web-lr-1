@@ -258,6 +258,34 @@ function render() {
             return;
         }
 
-        console.log(`Все поля заполнены корректно`)
-    }); 
+        const newDevice = {
+            id: Date.now(),
+            name: nameInput.value.trim(),
+            description: descriptionInput.value.trim(),
+            os: osInput.value.trim(),
+            details: [
+                `Оперативная память: ${ramInput.value} ГБ`,
+                ...detailsInput.value
+                    .split(/\r?\n/)
+                    .map((line) => line.trim())
+                    .filter((line) => line !== ``)
+            ],
+            status: statusSelect.value,
+            image: `assets/images/tn.jpg`,
+            alt: `Изображение устройства ${nameInput.value.trim()}`
+        };
+
+        state.devices.push(newDevice);
+
+        render();
+
+        addDeviceForm.reset();
+
+        nameError.textContent = ``;
+        osError.textContent = ``;
+        descriptionError.textContent = ``;
+        ramError.textContent = ``;
+
+        deviceModal.close();
+            }); 
 render();
