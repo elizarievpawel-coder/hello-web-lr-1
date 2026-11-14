@@ -219,3 +219,32 @@ dialog::backdrop {
     border-radius: 8px;
     resize: vertical;
 }
+
+/* Laboratory 3: API-backed device actions */
+#feedback {
+    margin: 12px 0;
+    min-height: 20px;
+    color: #146c39;
+}
+#feedback.error {
+    color: #a61d24;
+}
+.manual-status-note {
+    color: #555;
+    margin: 0 0 18px;
+    line-height: 1.5;
+}
+.status-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 12px;
+}
+.status-control select {
+    width: 100%;
+}
+.device-card button:disabled,
+.status-control select:disabled {
+    opacity: 0.55;
+    cursor: wait;
+}

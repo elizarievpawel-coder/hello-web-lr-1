@@ -1,0 +1,8 @@
+# Local virtual environments, cached bytecode and secrets
+.venv/
+.venv*/
+__pycache__/
+*.py[cod]
+*.db
+*.db-journal
+.env

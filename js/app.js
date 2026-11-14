@@ -1,337 +1,273 @@
-const defaultDevices = [
-    {
-        id: 1,
-        name: `Gigabyte G6 MF`,
-        description: `Основной ноутбук`,
-        os: `Windows 11`,
-        details: [
-            `Процессор: Intel Core i5-13500H`,
-            `Оперативная память: 16 ГБ`
-        ],
-        status: `Online`,
-        image: `assets/images/g6mf.jpg`,
-        alt: `Ноутбук Gigabyte G6 MF`
-    },
-
-    {
-        id: 2,
-        name: `Acer Aspire A315-53G`,
-        description: `Старый ноутбук`,
-        os: `Windows 10 / Linux`,
-        details: [
-            `Процессор: Intel Core i3-8130U`,
-            `Оперативная память: 8 ГБ`
-        ],
-        status: `Offline`,
-        image: `assets/images/acera3.jpg`,
-        alt: `Acer Aspire A315-53G`
-    },
-
-    {
-        id: 3,
-        name: `Desktop PC`,
-        description: `Старый пк`,
-        os: `Windows XP / Linux`,
-        details: [
-            `Тип: Desktop`,
-            `Оперативная память: 256 Мб`
-        ],
-        status: `Offline`,
-        image: `assets/images/dt.jpg`,
-        alt: `Desktop PC`
-    },
-
-    {
-        id: 4,
-        name: `Virtual Machine`,
-        description: `Виртуальная машина`,
-        os: `Debian Linux`,
-        details: [
-            `Тип: Virtual Machine`,
-            `Назначение: Тестирование`
-        ],
-        status: `Offline`,
-        image: `assets/images/vm.jpg`,
-        alt: `Virtual Machine`
-    },
-
-    {
-        id: 5,
-        name: `Ubuntu Environment`,
-        description: `Linux-среда`,
-        os: `Ubuntu Linux`,
-        details: [
-            `Тип: Linux Environment`,
-            `Назначение: Разработка`
-        ],
-        status: `Offline`,
-        image: `assets/images/uvm.jpg`,
-        alt: `Ubuntu Environment`
-    },
-
-    {
-        id: 6,
-        name: `Test Node`,
-        description: `Тестовый узел`,
-        os: `Linux`,
-        details: [
-            `Тип: Test Node`,
-            `Назначение: Эксперименты`
-        ],
-        status: `Offline`,
-        image: `assets/images/tn.jpg`,
-        alt: `Test Node`
-    }
-];
-
-let initialDevices;
-
-try {
-    const savedDevices = localStorage.getItem(`devices`);
-    const parsedDevices = savedDevices ? JSON.parse(savedDevices) : null;
-
-    initialDevices = Array.isArray(parsedDevices)
-        ? parsedDevices
-        : defaultDevices;
-} catch {
-    initialDevices = defaultDevices;
-}
-
+/* Personal Control Center — lab 3: frontend data comes from FastAPI. */
 const state = {
-    devices: [...initialDevices],
-    searchQuery: ``,
-    selectedOS: `all`,
-    sortBy: `name-asc`
+    devices: [],
+    searchQuery: "",
+    selectedOS: "all",
+    sortBy: "name-asc"
 };
 
-function saveDevices() {
-    localStorage.setItem(`devices`, JSON.stringify(state.devices));
+const deviceList = document.querySelector("#device-list");
+const searchInput = document.querySelector("#device-name");
+const osSelect = document.querySelector("#os");
+const sortSelect = document.querySelector("#sort");
+const searchForm = document.querySelector("#filter-form");
+const deviceModal = document.querySelector("#device-modal");
+const openModalButton = document.querySelector("#open-device-modal");
+const closeModalButton = document.querySelector("#close-device-modal");
+const cancelModalButton = document.querySelector("#cancel-device-modal");
+const addDeviceForm = document.querySelector("#add-device-form");
+const nameInput = document.querySelector("#new-device-name");
+const osInput = document.querySelector("#new-device-os");
+const descriptionInput = document.querySelector("#new-device-description");
+const ramInput = document.querySelector("#new-device-ram");
+const detailsInput = document.querySelector("#new-device-details");
+const statusSelect = document.querySelector("#new-device-status");
+const nameError = document.querySelector("#name-error");
+const osError = document.querySelector("#os-error");
+const descriptionError = document.querySelector("#description-error");
+const ramError = document.querySelector("#ram-error");
+const feedback = document.querySelector("#feedback");
+
+function showMessage(message, isError = false) {
+    feedback.textContent = message;
+    feedback.classList.toggle("error", isError);
 }
 
-const deviceList = document.querySelector(`#device-list`);
-const searchInput = document.querySelector(`#device-name`);
-const osSelect = document.querySelector(`#os`);
-const sortSelect = document.querySelector(`#sort`);
-const searchForm = document.querySelector(`#filter-form`);
-const deviceModal = document.querySelector(`#device-modal`);
-const openModalButton = document.querySelector(`#open-device-modal`);
-const closeModalButton = document.querySelector('#close-device-modal');
-const cancelModalButton = document.querySelector(`#cancel-device-modal`);
-const addDeviceForm = document.querySelector(`#add-device-form`);
-const nameInput = document.querySelector(`#new-device-name`);
-const osInput = document.querySelector(`#new-device-os`);
-const descriptionInput = document.querySelector(`#new-device-description`);
-const ramInput = document.querySelector(`#new-device-ram`);
-const detailsInput = document.querySelector(`#new-device-details`);
-const statusSelect = document.querySelector(`#new-device-status`);
-const nameError = document.querySelector(`#name-error`);
-const osError = document.querySelector(`#os-error`);
-const descriptionError = document.querySelector(`#description-error`);
-const ramError = document.querySelector(`#ram-error`); 
+async function apiRequest(path, options = {}) {
+    const response = await fetch(path, {
+        ...options,
+        headers: { "Content-Type": "application/json", ...options.headers }
+    });
+    if (!response.ok) {
+        let message = "Ошибка HTTP " + response.status;
+        try {
+            const errorBody = await response.json();
+            if (typeof errorBody.detail === "string") {
+                message += ": " + errorBody.detail;
+            } else if (Array.isArray(errorBody.detail)) {
+                message += ": " + errorBody.detail.map((item) => item.msg).join(", ");
+            }
+        } catch {
+            // Non-JSON error response: keep the HTTP status.
+        }
+        throw new Error(message);
+    }
+    return response.status === 204 ? null : response.json();
+}
 
-function createParagraph(text) {
-    const paragraph = document.createElement(`p`);
-    paragraph.textContent = text;
-
+function createParagraph(value) {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = value;
     return paragraph;
-
 }
 
 function getVisibleDevices() {
-    let devices = [...state.devices];
-
-    if (state.searchQuery !== ``) {
-        devices = devices.filter((device) => 
-           device.name
-                .toLowerCase()
-                .includes(state.searchQuery.toLowerCase())
-        );
-    }
-
-    if (state.selectedOS !== `all`) {
-        devices = devices.filter((device) =>
-                device.os
-                    .toLowerCase()
-                    .includes(state.selectedOS)
-        );
-    }
-
-    if (state.sortBy === `name-asc`) {
-        devices.sort((a, b) =>
-            a.name.localeCompare(b.name)
-        );
-    }
-        
-    if (state.sortBy === `name-desc`) {
-        devices.sort((a, b) =>
-            b.name.localeCompare(a.name)
-        );
-    }
-
-    return devices;
+    const query = state.searchQuery.trim().toLowerCase();
+    return state.devices
+        .filter((device) => device.name.toLowerCase().includes(query))
+        .filter((device) => state.selectedOS === "all" ||
+            device.os.toLowerCase().includes(state.selectedOS))
+        .slice()
+        .sort((a, b) => state.sortBy === "name-desc"
+            ? b.name.localeCompare(a.name)
+            : a.name.localeCompare(b.name));
 }
 
 function render() {
     deviceList.replaceChildren();
+    const devices = getVisibleDevices();
+    if (devices.length === 0) {
+        deviceList.append(createParagraph("Устройства не найдены."));
+        return;
+    }
 
-    const visibleDevices = getVisibleDevices();
+    devices.forEach((device) => {
+        const article = document.createElement("article");
+        article.className = "device-card";
 
-    visibleDevices.forEach((device) => {
-        const article = document.createElement(`article`);
-        article.className = `device-card`;
-        
-        const image = document.createElement(`img`);
+        const image = document.createElement("img");
         image.src = device.image;
         image.alt = device.alt;
-        
-        const title = document.createElement(`h3`);
+
+        const title = document.createElement("h3");
         title.textContent = device.name;
-    
-        const description = createParagraph(device.description);
-        const os = createParagraph(`ОС: ${device.os}`);
-        
+
         article.append(
-                image,
-                title,
-                description,
-                os
+            image,
+            title,
+            createParagraph(device.description),
+            createParagraph("ОС: " + device.os)
         );
+
         device.details.forEach((detail) => {
             article.append(createParagraph(detail));
         });
-        const status = createParagraph(`Статус: ${device.status}`);
-        article.append(status);
 
-        const deleteButton = document.createElement(`button`);
-        deleteButton.type = `button`;
-        deleteButton.className = `delete-device`;
+        const label = document.createElement("label");
+        label.className = "status-control";
+        label.textContent = "Статус (вручную)";
+        const select = document.createElement("select");
+        select.className = "device-status-select";
+        select.dataset.id = device.id;
+        select.setAttribute("aria-label", "Статус устройства " + device.name);
+        ["Online", "Offline"].forEach((status) => {
+            const option = document.createElement("option");
+            option.value = status;
+            option.textContent = status;
+            select.append(option);
+        });
+        select.value = device.status;
+        label.append(select);
+        article.append(label);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.className = "delete-device";
         deleteButton.dataset.id = device.id;
-        deleteButton.textContent = `Удалить`;
-
+        deleteButton.textContent = "Удалить";
         article.append(deleteButton);
-        
+
         deviceList.append(article);
-        });
+    });
+}
+
+async function loadDevices() {
+    try {
+        showMessage("Загружаю устройства с сервера...");
+        state.devices = await apiRequest("/api/devices");
+        render();
+        showMessage("");
+    } catch (error) {
+        showMessage("Не удалось загрузить устройства. Проверь запуск сервера: " + error.message, true);
     }
+}
 
-    searchInput.addEventListener(`input`, (event) => {
-        state.searchQuery = event.target.value;
+searchInput.addEventListener("input", (event) => {
+    state.searchQuery = event.target.value;
+    render();
+});
+
+osSelect.addEventListener("change", (event) => {
+    state.selectedOS = event.target.value;
+    render();
+});
+
+sortSelect.addEventListener("change", (event) => {
+    state.sortBy = event.target.value;
+    render();
+});
+
+searchForm.addEventListener("submit", (event) => event.preventDefault());
+
+/* Event delegation: one click handler for all delete buttons. */
+deviceList.addEventListener("click", async (event) => {
+    const button = event.target.closest(".delete-device");
+    if (!button) return;
+
+    const id = Number(button.dataset.id);
+    button.disabled = true;
+    try {
+        await apiRequest("/api/devices/" + id, { method: "DELETE" });
+        state.devices = state.devices.filter((device) => device.id !== id);
         render();
-    });
-
-    osSelect.addEventListener(`change`, (event) => {
-        state.selectedOS = event.target.value;
-        render();
-    });
-
-    sortSelect.addEventListener(`change`, (event) => {
-        state.sortBy = event.target.value;
-        render();
-    });
-
-    searchForm.addEventListener(`submit`, (event) => {
-        event.preventDefault();
-    });
-
-    deviceList.addEventListener(`click`, (event) => {
-            const deleteButton = event.target.closest(`.delete-device`);
-
-            if (!deleteButton) {
-                return;
-            }
-
-            const deviceId = Number(deleteButton.dataset.id);
-
-            state.devices = state.devices.filter((device) =>
-                device.id !== deviceId
-            );
-
-            saveDevices();
-
-            render();
-        });
-
-    openModalButton.addEventListener(`click`, () => {
-        deviceModal.showModal();
-    });
-
-    closeModalButton.addEventListener(`click`, () => {
-        deviceModal.close();
-    });
-
-    cancelModalButton.addEventListener(`click`, () => {
-        deviceModal.close();
-    });
-
-    deviceModal.addEventListener(`click`, (event) => {
-        if (event.target === deviceModal) {
-            deviceModal.close();
-        }
-    });
-
-    function validateField(input, errorElement) {
-        const validity = input.validity;
-        let errorMessage = ``;
-
-        if (validity.valueMissing) {
-            errorMessage = `Это поле обязательное для заполнения`;
-        } else if (validity.tooShort) {
-            errorMessage = `Минимальная длина - ${input.minLength} символа`;
-        } else if (validity.tooLong) {
-            errorMessage = `Максимальная длина - ${input.maxLength} символа`;
-        } else if (validity.rangeUnderflow) {
-            errorMessage = `Минимальное значение - ${input.min}`;
-        } else if (validity.rangeOverflow) {
-            errorMessage = `Максимальное значение - ${input.max}`;
-        }
-
-        errorElement.textContent = errorMessage;
-
-        return validity.valid;
+        showMessage("Устройство удалено из базы данных.");
+    } catch (error) {
+        button.disabled = false;
+        showMessage("Не удалось удалить устройство: " + error.message, true);
     }
+});
 
-    addDeviceForm.addEventListener(`submit`, (event) => {
-        event.preventDefault();
+/* Changing status calls PATCH and writes to the database. */
+deviceList.addEventListener("change", async (event) => {
+    const select = event.target.closest(".device-status-select");
+    if (!select) return;
 
-        const isNameValid = validateField(nameInput, nameError);
-        const isOsValid = validateField(osInput, osError);
-        const isDescriptionValid = validateField(descriptionInput, descriptionError);
-        const isRamValid = validateField(ramInput, ramError);
-
-        if (!isNameValid || !isOsValid || !isDescriptionValid || !isRamValid) {
-            return;
-        }
-
-        const newDevice = {
-            id: Date.now(),
-            name: nameInput.value.trim(),
-            description: descriptionInput.value.trim(),
-            os: osInput.value.trim(),
-            details: [
-                `Оперативная память: ${ramInput.value} ГБ`,
-                ...detailsInput.value
-                    .split(/\r?\n/)
-                    .map((line) => line.trim())
-                    .filter((line) => line !== ``)
-            ],
-            status: statusSelect.value,
-            image: `assets/images/tn.jpg`,
-            alt: `Изображение устройства ${nameInput.value.trim()}`
-        };
-
-        state.devices.push(newDevice);
-
-        saveDevices();
-        
+    const id = Number(select.dataset.id);
+    select.disabled = true;
+    try {
+        const updated = await apiRequest("/api/devices/" + id, {
+            method: "PATCH",
+            body: JSON.stringify({ status: select.value })
+        });
+        state.devices = state.devices.map((device) => device.id === id ? updated : device);
         render();
+        showMessage("Статус сохранён в базе данных.");
+    } catch (error) {
+        render();
+        showMessage("Не удалось изменить статус: " + error.message, true);
+    }
+});
 
+openModalButton.addEventListener("click", () => deviceModal.showModal());
+closeModalButton.addEventListener("click", () => deviceModal.close());
+cancelModalButton.addEventListener("click", () => deviceModal.close());
+deviceModal.addEventListener("click", (event) => {
+    if (event.target === deviceModal) deviceModal.close();
+});
+
+function validateField(input, errorElement) {
+    const text = input.value.trim();
+    let message = "";
+
+    if (text === "") {
+        message = "Это поле обязательно для заполнения";
+    } else if (input.type === "number") {
+        if (!input.validity.valid || !Number.isInteger(Number(text))) {
+            message = "Введите целое число от " + input.min + " до " + input.max;
+        }
+    } else if (text.length < input.minLength) {
+        message = "Минимальная длина — " + input.minLength + " символа";
+    } else if (text.length > input.maxLength) {
+        message = "Максимальная длина — " + input.maxLength + " символов";
+    }
+    errorElement.textContent = message;
+    return message === "";
+}
+
+addDeviceForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const fields = [
+        [nameInput, nameError],
+        [osInput, osError],
+        [descriptionInput, descriptionError],
+        [ramInput, ramError]
+    ];
+    const valid = fields.map(([input, error]) => validateField(input, error)).every(Boolean);
+    if (!valid) return;
+
+    const submitButton = addDeviceForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    const name = nameInput.value.trim();
+    const payload = {
+        name,
+        description: descriptionInput.value.trim(),
+        os: osInput.value.trim(),
+        details: [
+            "Оперативная память: " + Number(ramInput.value) + " ГБ",
+            ...detailsInput.value.split(/\r?\n/).map((line) => line.trim()).filter(Boolean)
+        ],
+        status: statusSelect.value,
+        image: "assets/images/tn.jpg",
+        alt: "Изображение устройства " + name
+    };
+    try {
+        const created = await apiRequest("/api/devices", {
+            method: "POST",
+            body: JSON.stringify(payload)
+        });
+        state.devices.push(created);
+        render();
         addDeviceForm.reset();
-
-        nameError.textContent = ``;
-        osError.textContent = ``;
-        descriptionError.textContent = ``;
-        ramError.textContent = ``;
-
+        fields.forEach(([, error]) => error.textContent = "");
         deviceModal.close();
-            }); 
+        showMessage("Устройство добавлено в базу данных.");
+    } catch (error) {
+        showMessage("Не удалось добавить устройство: " + error.message, true);
+    } finally {
+        submitButton.disabled = false;
+    }
+});
+
 render();
+loadDevices();
