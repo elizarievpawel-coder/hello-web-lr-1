@@ -209,7 +209,7 @@ Frontend обслуживается FastAPI и обращается к отно�
 | Сервис | Назначение |
 |---|---|
 | webapp | Существующий Personal Control Center на FastAPI |
-| cAdvisor | Собирает CPU, RAM, сеть и доступные дисковые метрики контейнеров |
+| cAdvisor | Собирает метрики ресурсов Docker-контейнеров |
 | Prometheus | Каждые 15 секунд опрашивает cAdvisor и сохраняет метрики |
 | Grafana | Читает метрики из Prometheus и строит панели графиков |
 
@@ -223,7 +223,7 @@ Frontend обслуживается FastAPI и обращается к отно�
 2. В **docker-compose.yml** объявлены webapp, cadvisor, prometheus и grafana, их порты, тома и сеть.
 3. В **monitoring/prometheus.yml** задан источник cadvisor:8080 и интервал 15 секунд.
 4. В **monitoring/grafana/provisioning/datasources/prometheus.yml** автоматически подключён Prometheus по адресу http://prometheus:9090 (Docker-сеть).
-5. Через конфигурацию provisioning и **monitoring/grafana/dashboards/docker-containers.json** подготовлен дашборд с CPU, RAM, входящим трафиком, дисковыми показателями и доступностью cAdvisor.
+5. Через конфигурацию provisioning и **monitoring/grafana/dashboards/docker-containers.json** подготовлен дашборд, отображающий только показатели контейнера webapp: CPU, RAM, входящий и исходящий сетевой трафик. Доступность cAdvisor отображается на отдельной панели.
 6. Постоянные Docker-тома device_data, prometheus_data и grafana_data сохраняют данные приложения, Prometheus и Grafana соответственно.
 
 ### Запуск в Ubuntu WSL 2
@@ -261,7 +261,7 @@ sudo docker compose ps
 3. **Prometheus Targets:** открыть http://localhost:9090/targets, убедиться, что job cadvisor — **UP**.
 4. **PromQL:** выполнить запрос up{job="cadvisor"} (ожидаемый результат 1 при успешной доступности).
 5. **Метрики:** выполнить запрос container_cpu_usage_seconds_total и убедиться, что есть данные.
-6. **Grafana:** открыть подготовленный дашборд с графиками CPU/RAM/сети/диска. Для rate() требуются несколько точек; некоторые метрики могут быть недоступны в WSL2.
+6. **Grafana:** открыть дашборд с показателями CPU, RAM, входящего и исходящего сетевого трафика контейнера webapp. Для rate() необходимо накопить несколько измерений.
 
 Команда docker compose ps подтвердила запуск четырёх контейнеров. Дополнительная проверка источника метрик и заполнения графиков производится через интерфейсы Prometheus и Grafana.
 
@@ -276,18 +276,22 @@ container_cpu_usage_seconds_total
 ~~~
 
 ~~~promql
-rate(container_cpu_usage_seconds_total[5m])
+sum by (name) (rate(container_cpu_usage_seconds_total{image!="",name=~".*webapp.*"}[5m])) * 100
 ~~~
 
 ~~~promql
-container_memory_working_set_bytes
+sum by (name) (container_memory_working_set_bytes{image!="",name=~".*webapp.*"})
 ~~~
 
 ~~~promql
-rate(container_network_receive_bytes_total[5m])
+sum by (name) (rate(container_network_receive_bytes_total{name=~".*webapp.*"}[5m]))
 ~~~
 
-В дашборде применяются агрегированные запросы с подписями контейнеров. Метрики диска могут отличаться по доступности в зависимости от cgroups и конфигурации WSL.
+~~~promql
+sum by (name) (rate(container_network_transmit_bytes_total{name=~".*webapp.*"}[5m]))
+~~~
+
+В запросах дашборда метрики ограничены контейнером webapp. Остальные сервисы продолжают работу, но не отображаются на основных графиках.
 
 ### Диагностика
 
