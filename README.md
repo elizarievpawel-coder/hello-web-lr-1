@@ -107,3 +107,8 @@ Frontend обслуживается тем же FastAPI: **не нужно от�
 - backend/requirements.txt — Python-зависимости.
 
 Виртуальное окружение backend/.venv было добавлено в историю Git ранее. Новое окружение .venv-local исключается через .gitignore; старые отслеживаемые файлы пока не удалялись.
+
+
+## Лабораторная работа №4
+
+Docker-стек из Personal Control Center (webapp), cAdvisor, Prometheus и Grafana, включая готовый дашборд. Запуск, диагностика и порядок защиты — в [LAB4.md](LAB4.md).

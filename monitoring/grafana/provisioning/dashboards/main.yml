@@ -1,0 +1,9 @@
+apiVersion: 1
+providers:
+  - name: Docker Containers
+    orgId: 1
+    type: file
+    folder: Personal Control Center
+    updateIntervalSeconds: 30
+    options:
+      path: /etc/grafana/dashboards
